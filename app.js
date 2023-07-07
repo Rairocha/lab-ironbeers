@@ -36,10 +36,20 @@ app.get('/random-beer', (req, res) => {
   .catch(error => console.log(error));
 });
 
-app.get('singleBeer/:id',(req,res,next)=>{
+/*app.get('/single-beer/:id',(req,res,next)=>{
 punkAPI.getBeer(req.params.id)
 .then((foundBeer)=>{res.render('singleBeer.hbs',{foundBeer})})
 .catch((err)=>console.log(err))
+})*/
+
+app.get("/beers/beer-*", (req, res) => {
+  const beerPath = req.path;
+  const beerID = parseInt(beerPath.substring(12, beerPath.length))
+  punkAPI
+    .getBeer(beerID)
+    .then(beerFromApi =>
+      res.render('random-beer',beerFromApi[0]))
+    .catch(error => console.log(error))
 })
 
 app.listen(3000, () => console.log('🏃‍ on port 3000'));
